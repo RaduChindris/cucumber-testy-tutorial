@@ -1,4 +1,4 @@
-package org.fasttrackit.Automations;
+package org.fasttrackit.automation;
 
 import com.gargoylesoftware.htmlunit.ElementNotFoundException;
 import org.fasttrackit.util.TestBase;
