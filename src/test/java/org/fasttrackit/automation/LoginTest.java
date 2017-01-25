@@ -8,22 +8,14 @@ import org.openqa.selenium.WebElement;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
+import static org.hamcrest.core.Is.is;
+import static org.junit.Assert.assertThat;
+
 public class LoginTest extends TestBase {
     @Test
     public void validareLoginTest() {
-        System.out.println("ready");
-        driver.get("https://rawgit.com/sdl/Testy/master/src/test/functional/app-demo/login.html");
+        openBrowser();
 
-        WebElement emailfield = driver.findElement(By.id("email"));
-        WebElement passField = driver.findElement(By.name("password"));
-        WebElement loginBtn = driver.findElement(By.className("login-btn"));
-
-        System.out.println("enter email");
-        emailfield.sendKeys("eu@fast.com");
-        System.out.println("ennter password");
-        passField.sendKeys("eu.pass");
-        System.out.println("log in");
-        loginBtn.click();
 
         try {
             WebElement logoutBtn = driver.findElement(By.linkText("Logout"));
@@ -34,22 +26,21 @@ public class LoginTest extends TestBase {
         }
     }
 
+
     @Test
     public void validateErrorMessageNoEmailPassword() {
-        System.out.println("ready");
-        driver.get("https://rawgit.com/sdl/Testy/master/src/test/functional/app-demo/login.html");
+        openBrowser();
 
 
         WebElement loginBtn = driver.findElement(By.className("login-btn"));
         loginBtn.click();
         WebElement mesajeroare = driver.findElement(By.className("error-msg"));
-        Assert.assertEquals( mesajeroare.getText(), "Please enter your email!","Not the same cand nu este nici adresa nici email");
+        Assert.assertEquals(mesajeroare.getText(), "Please enter your email!", "Not the same cand nu este nici adresa nici email");
     }
 
     @Test
     public void validateErrorMessageNoPassword() {
-        System.out.println("ready");
-        driver.get("https://rawgit.com/sdl/Testy/master/src/test/functional/app-demo/login.html");
+        openBrowser();
 
 
         WebElement email = driver.findElement(By.id("email"));
@@ -58,14 +49,13 @@ public class LoginTest extends TestBase {
 
         email.sendKeys("eu@fast.com");
         loginBtn.click();
-        Assert.assertEquals(mesajeroare.getText(), "Please enter your password!","Not the same cand lipseste adresa");
+        Assert.assertEquals(mesajeroare.getText(), "Please enter your password!", "Not the same cand lipseste adresa");
 
     }
 
     @Test
     public void validateErrorMessageNoEmail() {
-        System.out.println("ready");
-        driver.get("https://rawgit.com/sdl/Testy/master/src/test/functional/app-demo/login.html");
+        openBrowser();
 
 
         WebElement password = driver.findElement(By.name("password"));
@@ -80,40 +70,52 @@ public class LoginTest extends TestBase {
 
     @Test
     public void validareWrongEmail() {
-        System.out.println("ready");
-        driver.get("https://rawgit.com/sdl/Testy/master/src/test/functional/app-demo/login.html");
+        openBrowser();
 
         WebElement emailfield = driver.findElement(By.id("email"));
         WebElement passField = driver.findElement(By.name("password"));
         WebElement loginBtn = driver.findElement(By.className("login-btn"));
-        WebElement mesajeroare=driver.findElement(By.className("error-msg"));
-
+        WebElement mesajeroare = driver.findElement(By.className("error-msg"));
 
 
         emailfield.sendKeys("euradu@fast.com");
         passField.sendKeys("eu.pass");
         loginBtn.click();
-        Assert.assertEquals(mesajeroare.getText(),"Invalid user or password!","Adresa de email gresita");
+        Assert.assertEquals(mesajeroare.getText(), "Invalid user or password!", "Adresa de email gresita");
 
     }
 
     @Test
     public void validareWrongPssword() {
-        System.out.println("ready");
-        driver.get("https://rawgit.com/sdl/Testy/master/src/test/functional/app-demo/login.html");
+        openBrowser();
 
+        login("eu@fast.com", "euradu.pass");
+        WebElement mesajeroare = driver.findElement(By.className("error-msg"));
+        // Assert.assertEquals(mesajeroare.getText(),"Invalid user or password!");
+        assertThat(mesajeroare.getText(), is("Invalid user or password!"));
+
+    }
+
+
+
+    public void login(String email,String password){
         WebElement emailfield = driver.findElement(By.id("email"));
         WebElement passField = driver.findElement(By.name("password"));
         WebElement loginBtn = driver.findElement(By.className("login-btn"));
-        WebElement mesajeroare=driver.findElement(By.className("error-msg"));
 
-
-
-        emailfield.sendKeys("eu@fast.com");
-        passField.sendKeys("euradu.pass");
+        System.out.println("enter email:"+email);
+        emailfield.sendKeys(email);
+        System.out.println("ennter password:" + password);
+        passField.sendKeys(password);
+        System.out.println("log in");
         loginBtn.click();
-        Assert.assertEquals(mesajeroare.getText(),"Invalid user or password!","Adresa de email gresita");
 
+
+    }
+
+    private void openBrowser() {
+        System.out.println("ready");
+        driver.get("https://rawgit.com/sdl/Testy/master/src/test/functional/app-demo/login.html");
     }
 }
 
