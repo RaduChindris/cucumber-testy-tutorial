@@ -12,24 +12,12 @@ import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
 
 public class LoginTest extends TestBase {
-    @Test
-    public void validareLoginTest() {
-        openBrowser();
 
-
-        try {
-            WebElement logoutBtn = driver.findElement(By.linkText("Logout"));
-            logoutBtn.click();
-
-        } catch (NoSuchElementException er) {
-            Assert.fail("Could not log in log button could not be radu found");
-        }
-    }
 
 
     @Test
     public void validateErrorMessageNoEmailPassword() {
-        openBrowser();
+        SeleniumTestsUtil.openBrowser(driver);
 
 
         WebElement loginBtn = driver.findElement(By.className("login-btn"));
@@ -40,7 +28,7 @@ public class LoginTest extends TestBase {
 
     @Test
     public void validateErrorMessageNoPassword() {
-        openBrowser();
+        SeleniumTestsUtil.openBrowser(driver);
 
 
         WebElement email = driver.findElement(By.id("email"));
@@ -55,7 +43,7 @@ public class LoginTest extends TestBase {
 
     @Test
     public void validateErrorMessageNoEmail() {
-        openBrowser();
+        SeleniumTestsUtil.openBrowser(driver);
 
 
         WebElement password = driver.findElement(By.name("password"));
@@ -70,7 +58,7 @@ public class LoginTest extends TestBase {
 
     @Test
     public void validareWrongEmail() {
-        openBrowser();
+        SeleniumTestsUtil.openBrowser(driver);
 
         WebElement emailfield = driver.findElement(By.id("email"));
         WebElement passField = driver.findElement(By.name("password"));
@@ -87,9 +75,9 @@ public class LoginTest extends TestBase {
 
     @Test
     public void validareWrongPssword() {
-        openBrowser();
+        SeleniumTestsUtil.openBrowser(driver);
 
-        login("eu@fast.com", "euradu.pass");
+        SeleniumTestsUtil.login("eu@fast.com", "euradu.pass",driver);
         WebElement mesajeroare = driver.findElement(By.className("error-msg"));
         // Assert.assertEquals(mesajeroare.getText(),"Invalid user or password!");
         assertThat(mesajeroare.getText(), is("Invalid user or password!"));
@@ -97,26 +85,6 @@ public class LoginTest extends TestBase {
     }
 
 
-
-    public void login(String email,String password){
-        WebElement emailfield = driver.findElement(By.id("email"));
-        WebElement passField = driver.findElement(By.name("password"));
-        WebElement loginBtn = driver.findElement(By.className("login-btn"));
-
-        System.out.println("enter email:"+email);
-        emailfield.sendKeys(email);
-        System.out.println("ennter password:" + password);
-        passField.sendKeys(password);
-        System.out.println("log in");
-        loginBtn.click();
-
-
-    }
-
-    private void openBrowser() {
-        System.out.println("ready");
-        driver.get("https://rawgit.com/sdl/Testy/master/src/test/functional/app-demo/login.html");
-    }
 }
 
 
